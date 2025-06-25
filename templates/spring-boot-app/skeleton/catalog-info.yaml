@@ -1,0 +1,20 @@
+apiVersion: backstage.io/v1alpha1
+kind: ${{ values.entityKind }}
+metadata:
+  name: ${{ values.repoName }}
+  annotations:
+    github.com/project-slug: ${{ values.orgName }}/${{ values.repoName }}
+    backstage.io/kubernetes-id: ${{ values.projectName }}
+    backstage.io/kubernetes-namespace: ${{ values.namespace }}
+    backstage.io/kubernetes-label-selector: 'app=${{ values.projectName }}'
+    argocd/app-name: 'springboot-app, springboot-image-build'
+  tags:
+    - springboot
+    - api
+    - microservice
+spec:
+  type: ${{ values.applicationType }}
+  lifecycle: ${{ values.lifecycle }}
+  owner: ${{ values.owner }}
+  providesApis:
+    - ${{ values.repoName }}-api
