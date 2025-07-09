@@ -10,7 +10,7 @@ const Header = () => {
       <Row className="justify-content-center">
         <Col xs="10" className="text-center">
           <div className="header mx-auto">
-            <h1>Weather App</h1>
+            <h1>TechNova Weather App</h1>
           </div>
         </Col>
       </Row>
