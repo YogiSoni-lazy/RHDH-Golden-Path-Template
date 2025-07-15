@@ -12,4 +12,5 @@ spec:
   type: openapi
   lifecycle: experimental
   owner: ${{ values.orgName }}
-  definition: ./openapi.json
+  definition:
+    $text: https://react-app-route-${{ values.projectName }}.apps.cluster-${{ values.clusterid }}.dynamic.redhatworkshops.io/v3/api-docs
