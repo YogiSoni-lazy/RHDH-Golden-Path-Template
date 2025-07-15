@@ -19,6 +19,7 @@ spring:
 
 server:
   port: ${{ values.backendport }}
+  #port: 9080
 
 logging:
   level:

@@ -18,7 +18,8 @@ spring:
     active: dev
 
 server:
-  port: 8070
+  port: ${{ values.backendport }}
+  #port: 9080
 
 logging:
   level:
