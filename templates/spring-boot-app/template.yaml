@@ -168,7 +168,21 @@ spec:
         description: ${{ parameters.description }}
         repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{ parameters.repoName }}
         defaultBranch: main
-        
+
+    - id: clonePublishedRepo
+      name: Clone Published GitHub Repo
+      action: fetch:plain
+      input:
+        url: ${{ steps.publish.output.remoteUrl }}
+        targetPath: cloned-repo
+
+    - id: debug-cloned-files
+      name: Debug Cloned Files
+      action: debug:log
+      input:
+        message: |
+          Cloned files are available under 'cloned-repo'        
+
     - id: register
       name: Registering the Catalog Info Component
       action: catalog:register
