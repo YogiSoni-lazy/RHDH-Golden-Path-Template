@@ -75,6 +75,27 @@ spec:
       required:
         - namespace
 
+    - title: ArgoCD Configuration
+      properties:
+        argocdServer:
+          title: ArgoCD Server
+          type: string
+          #default: argocd-server.demo-project.svc:443
+          default: svc/openshift-gitops-server:8080
+        argocdUsername:
+          title: ArgoCD Username
+          type: string
+          default: admin
+        argocdPassword:
+          title: ArgoCD Password
+          type: string
+          description: The password for ArgoCD login
+          ui:widget: password
+      required:
+        - argocdServer
+        - argocdUsername
+        - argocdPassword
+
   steps:
     - id: debug-input
       name: Debug Input Parameters
@@ -176,12 +197,17 @@ spec:
         url: ${{ steps.publish.output.remoteUrl }}
         targetPath: cloned-repo
 
-    - id: debug-cloned-files
-      name: Debug Cloned Files
-      action: debug:log
+    - id: argocdLogin
+      name: ArgoCD Login
+      action: script:run
       input:
-        message: |
-          Cloned files are available under 'cloned-repo'        
+        script: |
+          echo "Logging in to ArgoCD..."
+          argocd login ${{ parameters.argocdServer }} \
+            --username ${{ parameters.argocdUsername }} \
+            --password ${{ parameters.argocdPassword }} \
+            --insecure
+          echo "Login successful"
 
     - id: register
       name: Registering the Catalog Info Component
