@@ -150,7 +150,7 @@ spec:
       action: debug:log
       input:
         message: |
-         📄 catalog-info.yaml content:
+         catalog-info.yaml content:
          ${{ readFile('catalog-info.yaml') }}
 
     - id: debug-workspace
@@ -158,7 +158,7 @@ spec:
       action: debug:log
       input:
         message: |
-         📁 Workspace contents:
+         Workspace contents:
          ${{ parameters.repoName }}
          ${{ parameters.namespace }}
          ${{ parameters.owner }}
@@ -193,19 +193,21 @@ spec:
         repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{ parameters.repoName }}
         defaultBranch: main
 
-    - id: apply-pipeline
-      name: Apply Tekton Pipeline
-      action: kubernetes:apply
+    - id: deploy-tekton-app
+      name: Deploy ArgoCD App for Tekton Resources
+      action: script:run
       input:
-        path: pipeline.yaml
-        cluster: ${{ parameters.clusterid }}
+        script: |
+          echo "Creating ArgoCD application to deploy Tekton resources..."
+          argocd app create tekton-ci-app \
+            --repo ${{ steps.publish.output.remoteUrl }} \
+            --path tekton \
+            --dest-server https://kubernetes.default.svc \
+            --dest-namespace ${{ parameters.namespace }} \
+            --directory-recurse || echo "App already exists"
 
-    - id: apply-pipelinerun
-      name: Trigger Tekton PipelineRun
-      action: kubernetes:apply
-      input:
-        path: pipeline-run.yaml
-        cluster: ${{ parameters.clusterid }}
+          echo "Syncing Tekton application..."
+          argocd app sync tekton-ci-app
 
     - id: clonePublishedRepo
       name: Clone Published GitHub Repo
@@ -225,7 +227,6 @@ spec:
             --password ${{ parameters.argocdPassword }} \
             --insecure
           echo "Login successful"
-
 
     - id: register
       name: Registering the Catalog Info Component
