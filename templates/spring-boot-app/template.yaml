@@ -81,7 +81,7 @@ spec:
           title: ArgoCD Server
           type: string
           #default: argocd-server.demo-project.svc:443
-          default: svc/openshift-gitops-server:8080
+          default: openshift-gitops-server.openshift-gitops.svc:80
         argocdUsername:
           title: ArgoCD Username
           type: string
@@ -190,6 +190,34 @@ spec:
         repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{ parameters.repoName }}
         defaultBranch: main
 
+    - id: generatePipelineFiles
+      name: Generate Tekton Pipeline YAMLs
+      action: fetch:template
+      input:
+        url: ./skeleton
+        targetPath: deploy/tekton
+        values:
+          orgName: ${{ parameters.orgName }}
+          repoName: ${{ parameters.repoName }}
+          namespace: ${{ parameters.namespace }}
+          argocdServer: ${{ parameters.argocdServer }}
+          argocdUsername: ${{ parameters.argocdUsername }}
+          argocdPassword: ${{ parameters.argocdPassword }}
+
+    - id: apply-pipeline
+      name: Apply Tekton Pipeline
+      action: kubernetes:apply
+      input:
+        path: deploy/tekton/pipeline.yaml
+        cluster: ${{ parameters.clusterid }}
+
+    - id: apply-pipelinerun
+      name: Trigger Tekton PipelineRun
+      action: kubernetes:apply
+      input:
+        path: deploy/tekton/pipeline-run.yaml
+        cluster: ${{ parameters.clusterid }}
+
     - id: clonePublishedRepo
       name: Clone Published GitHub Repo
       action: fetch:plain
@@ -208,6 +236,7 @@ spec:
             --password ${{ parameters.argocdPassword }} \
             --insecure
           echo "Login successful"
+
 
     - id: register
       name: Registering the Catalog Info Component
