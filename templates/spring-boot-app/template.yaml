@@ -190,32 +190,18 @@ spec:
         repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{ parameters.repoName }}
         defaultBranch: main
 
-    - id: generatePipelineFiles
-      name: Generate Tekton Pipeline YAMLs
-      action: fetch:template
-      input:
-        url: ./skeleton
-        targetPath: deploy/tekton
-        values:
-          orgName: ${{ parameters.orgName }}
-          repoName: ${{ parameters.repoName }}
-          namespace: ${{ parameters.namespace }}
-          argocdServer: ${{ parameters.argocdServer }}
-          argocdUsername: ${{ parameters.argocdUsername }}
-          argocdPassword: ${{ parameters.argocdPassword }}
-
     - id: apply-pipeline
       name: Apply Tekton Pipeline
       action: kubernetes:apply
       input:
-        path: deploy/tekton/pipeline.yaml
+        path: pipeline.yaml
         cluster: ${{ parameters.clusterid }}
 
     - id: apply-pipelinerun
       name: Trigger Tekton PipelineRun
       action: kubernetes:apply
       input:
-        path: deploy/tekton/pipeline-run.yaml
+        path: pipeline-run.yaml
         cluster: ${{ parameters.clusterid }}
 
     - id: clonePublishedRepo
