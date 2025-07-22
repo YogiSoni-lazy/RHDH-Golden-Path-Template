@@ -13,7 +13,7 @@ spec:
     - name: ARGOCD_USERNAME
       value: ${{ values.argocdUsername }}
     - name: ARGOCD_PASSWORD
-      value: ${{ argocdPassword }}
+      value: ${{ values.argocdPassword }}
     - name: REPO_URL
       value: "https://github.com/${{ values.orgName }}/${{ values.repoName }}.git"
     - name: DEST_NAMESPACE

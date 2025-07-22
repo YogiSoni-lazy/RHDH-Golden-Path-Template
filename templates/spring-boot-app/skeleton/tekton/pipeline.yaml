@@ -14,7 +14,7 @@ spec:
       default: ${{ values.argocdUsername }}
     - name: ARGOCD_PASSWORD
       type: string
-      default: ${{ argocdPassword }}
+      default: ${{ values.argocdPassword }}
     - name: REPO_URL
       type: string
       default: "https://github.com/${{ values.orgName }}/${{ values.repoName }}.git"
