@@ -193,17 +193,16 @@ spec:
         repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{ parameters.repoName }}
         defaultBranch: main
 
-    - id: argocdLogin
-      name: ArgoCD Login
-      action: script:run
+    - id: deploy-tekton-pipeline
+      name: Deploy Tekton Pipeline via ArgoCD App
+      action: argocd:create-resources
       input:
-        script: |
-          echo "Logging in to ArgoCD..."
-          argocd login ${{ parameters.argocdServer }} \
-            --username ${{ parameters.argocdUsername }} \
-            --password ${{ parameters.argocdPassword }} \
-            --insecure
-          echo "Login successful"
+        projectName: ${{ parameters.repoName }}-tekton
+        appName: ${{ parameters.repoName }}-tekton-ci
+        argoInstance: default
+        namespace: openshift-gitops
+        repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{ parameters.repoName }}
+        path: 'tekton'
 
     - id: register
       name: Registering the Catalog Info Component
