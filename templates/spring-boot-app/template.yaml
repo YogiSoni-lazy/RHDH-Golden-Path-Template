@@ -197,7 +197,7 @@ spec:
       name: Deploy Tekton Pipeline via ArgoCD App
       action: argocd:create-resources
       input:
-        projectName: ${{ parameters.repoName }}-tekton
+        projectName: default
         appName: ${{ parameters.repoName }}-tekton-ci
         argoInstance: default
         namespace: openshift-gitops
