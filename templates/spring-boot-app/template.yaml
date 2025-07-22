@@ -193,22 +193,6 @@ spec:
         repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{ parameters.repoName }}
         defaultBranch: main
 
-    - id: deploy-tekton-app
-      name: Deploy ArgoCD App for Tekton Resources
-      action: script:run
-      input:
-        script: |
-          echo "Creating ArgoCD application to deploy Tekton resources..."
-          argocd app create tekton-ci-app \
-            --repo ${{ steps.publish.output.remoteUrl }} \
-            --path tekton \
-            --dest-server https://kubernetes.default.svc \
-            --dest-namespace ${{ parameters.namespace }} \
-            --directory-recurse || echo "App already exists"
-
-          echo "Syncing Tekton application..."
-          argocd app sync tekton-ci-app
-
     - id: clonePublishedRepo
       name: Clone Published GitHub Repo
       action: fetch:plain
