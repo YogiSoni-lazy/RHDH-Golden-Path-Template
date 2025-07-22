@@ -193,13 +193,6 @@ spec:
         repoUrl: github.com?owner=${{ parameters.orgName }}&repo=${{ parameters.repoName }}
         defaultBranch: main
 
-    - id: clonePublishedRepo
-      name: Clone Published GitHub Repo
-      action: fetch:plain
-      input:
-        url: ${{ steps.publish.output.remoteUrl }}
-        targetPath: cloned-repo
-
     - id: argocdLogin
       name: ArgoCD Login
       action: script:run
