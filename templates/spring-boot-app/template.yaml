@@ -1,8 +1,8 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: NewTesting
-  title: TestJuly23
+  name: argocdtest
+  title: argocdtest
   description: Create a rest api backend in spring-boot with CICD pipeline 
   tags:
     - springboot
@@ -102,7 +102,7 @@ spec:
       action: debug:log
       input:
         message: |
-          📦 Received input parameters:
+          Received input parameters:
           orgName: ${{ parameters.orgName }}
           repoName: ${{ parameters.repoName }}
           repoVisibility: ${{ parameters.repoVisibility }}
