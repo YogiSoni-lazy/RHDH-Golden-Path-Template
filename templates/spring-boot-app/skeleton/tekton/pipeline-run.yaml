@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
-  name: technova-weather-app-run
+  name: technova-weather-app-pipeline 
   namespace: ${{ values.namespace }}
 spec:
   pipelineRef:
