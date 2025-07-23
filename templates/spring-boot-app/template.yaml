@@ -203,7 +203,7 @@ spec:
         namespace: ${{ parameters.namespace }}
         repoURL: https://github.com/${{ parameters.orgName }}/${{ parameters.repoName }}.git
         path: 'tekton'
-
+    
     - id: register
       name: Registering the Catalog Info Component
       action: catalog:register
@@ -217,4 +217,3 @@ spec:
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
         catalogInfoPath: /api-info.yaml
-
