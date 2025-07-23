@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: newapitest
-  title: NewAPITest
+  title: TestJuly23
   description: Create a rest api backend in spring-boot with CICD pipeline 
   tags:
     - springboot
